@@ -3,11 +3,11 @@ import requests
 import re
 import csv
 
-csv_file = open('ovp_all_all.csv', 'w')
+csv_file = open('ovp_all_mp4.csv', 'w')
 csv_writer = csv.writer(csv_file)
-csv_writer.writerow(['title', 'description','genre','keywords','duration','popularity','video_url','image_path' ])
+csv_writer.writerow(['video_id','title', 'description','genre','keywords','duration','popularity','video_url','image_path' ])
 
-with open('ovp_all_all.html') as html_file:
+with open('ovp_all_mp4.html') as html_file:
     soup = BeautifulSoup(html_file, 'lxml')
 
 results = soup.find('table', class_='resultsTable')
@@ -21,6 +21,8 @@ for result in results.find_all('tr'):
         title = td.a.text
         video_url = td.find('a', href=True)['href']
         img_file = td_img.find('img', src=True)['src']
+
+        video_id = re.search(r"videoid=(\d+)", video_url).group(1)
 
         # td_text = "Lucky Strike Cigarette Commercial: Square Dance (1948) Lucky Strike cigarette commercial with stop-motion animation of square-dancing cigarettes. Genre: EphemeralKeywords: Advertising: Television commercials;Substance abuse: Tobacco;Animation: Stop-motion;Duration: 00:00:58Popularity (downloads): 5126"
 
@@ -45,6 +47,7 @@ for result in results.find_all('tr'):
             duration = None
             popularity = None
 
+        print("Video ID:", video_id)
         print("Title:", title)
         # print("Year:", year)
         print("Description:", description)
@@ -56,6 +59,6 @@ for result in results.find_all('tr'):
         print("Image Path:",img_file)
         print("\n")
 
-        csv_writer.writerow([title, description, genre, keywords, duration, popularity, video_url, img_file])
+        csv_writer.writerow([video_id, title, description, genre, keywords, duration, popularity, video_url, img_file])
 
 csv_file.close()
