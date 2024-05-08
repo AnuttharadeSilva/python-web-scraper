@@ -7,7 +7,7 @@ csv_file = open('ovp_all_mp4.csv', 'w')
 csv_writer = csv.writer(csv_file)
 csv_writer.writerow(['video_id','title', 'description','genre','keywords','duration','popularity','video_url','image_path' ])
 
-with open('ovp_all_mp4.html') as html_file:
+with open('webpages/ovp_all_mp4.html') as html_file:
     soup = BeautifulSoup(html_file, 'lxml')
 
 results = soup.find('table', class_='resultsTable')
